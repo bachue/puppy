@@ -1,0 +1,18 @@
+[package]
+name = "puppy"
+version = "0.1.0"
+authors = ["Bachue Zhou <bachue.shu@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+toml = "0.5"
+chrono = "0.4.6"
+log = "0.4.6"
+fern = { version = "0.5.8", features = ["colored"] }
+libc = "0.2.55"
+nix = "0.13.0"
+serde = "1.0"
+serde_derive = "1.0"
+error-chain = "0.12.1"
+clap = "2.33.0"
+version = "3.0.0"
