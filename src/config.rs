@@ -7,22 +7,27 @@ use std::path::Path;
 #[derive(Deserialize, Debug)]
 pub struct Config {
     pub server: Server,
+    pub daemonize: Option<Daemonize>,
     pub logging: Logging,
     pub process: Process,
 }
 
 #[derive(Deserialize, Debug)]
 pub struct Server {
-    #[serde(default = "server::default_daemonize")]
-    pub daemonize: bool,
     #[serde(default = "server::default_host")]
     pub bind_host: String,
     #[serde(default = "server::default_port")]
     pub bind_port: String,
+}
+
+#[derive(Deserialize, Debug)]
+pub struct Daemonize {
     pub pidfile_path: Option<String>,
     pub directory: Option<String>,
     pub gid: Option<u32>,
     pub uid: Option<u32>,
+    #[serde(default = "daemonize::default_umask")]
+    pub umask: u16,
 }
 
 #[derive(Deserialize, Debug)]
@@ -83,16 +88,18 @@ fn read_config(path: &Path) -> std::io::Result<String> {
 }
 
 mod server {
-    pub(super) fn default_daemonize() -> bool {
-        false
-    }
-
     pub(super) fn default_host() -> String {
         "0.0.0.0".to_string()
     }
 
     pub(super) fn default_port() -> String {
         "http".to_string()
+    }
+}
+
+mod daemonize {
+    pub(super) fn default_umask() -> u16 {
+        0o777
     }
 }
 
